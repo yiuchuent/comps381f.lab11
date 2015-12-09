@@ -24,6 +24,7 @@ app.get('/',function(req,res) {
 	if (!req.session.authenticated) {
 		res.redirect('/login');
 	}
+	res.write('Hello, ' + req.session.username + '\n');
 	res.end('This is a secret page!');
 });
 
@@ -36,6 +37,7 @@ app.post('/login',function(req,res) {
 		if (users[i].name == req.body.name && 
 		    users[i].password == req.body.password) {
 			req.session.authenticated = true;
+			req.session.username = users[i].name;
 		}
 	}
 	res.redirect('/');
