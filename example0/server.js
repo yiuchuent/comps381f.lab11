@@ -24,4 +24,9 @@ app.get('/', function(req,res) {
   res.redirect('/visit');
 })
 
+app.get('/logout', function(req,res) {
+  req.session = null;
+  res.redirect('/');
+})
+
 app.listen(process.env.PORT || 8099);
