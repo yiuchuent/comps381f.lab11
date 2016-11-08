@@ -1,31 +1,34 @@
 var express = require('express');
-var app = express();
+var session = require('cookie-session');
 var bodyParser = require('body-parser');
-var session = require('express-session');
+var app = express();
 
+app = express();
+app.set('trust proxy', 1);
+
+// middleware
 var SECRETKEY = 'I want to pass COMPS381F';
+
 var users = new Array(
 	{name: 'developer', password: 'developer'},
 	{name: 'guest', password: 'guest'}
 );
 
 app.set('view engine','ejs');
+app.use(session({
+  name: 'session',
+  keys: [SECRETKEY,'key2']
+}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
-app.use(session({
-	secret: SECRETKEY,
-	resave: true,
-	saveUninitialized: true
-}));
 
 app.get('/',function(req,res) {
 	console.log(req.session);
 	if (!req.session.authenticated) {
 		res.redirect('/login');
 	}
-	res.write('Hello, ' + req.session.username + '\n');
-	res.end('This is a secret page!');
+	res.status(200).end('This is a secret page! (' + req.session.username + ')');
 });
 
 app.get('/login',function(req,res) {
@@ -34,7 +37,7 @@ app.get('/login',function(req,res) {
 
 app.post('/login',function(req,res) {
 	for (var i=0; i<users.length; i++) {
-		if (users[i].name == req.body.name && 
+		if (users[i].name == req.body.name &&
 		    users[i].password == req.body.password) {
 			req.session.authenticated = true;
 			req.session.username = users[i].name;
@@ -44,7 +47,7 @@ app.post('/login',function(req,res) {
 });
 
 app.get('/logout',function(req,res) {
-	req.session.destroy();
+	req.session = null;
 	res.redirect('/');
 });
 

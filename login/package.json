@@ -8,9 +8,8 @@
         "express": "*",
         "ejs": "*",
 		"body-parser": "*",
-		"express-session": "*"
+		"cookie-session": "*"
     },
     "engine": "node >= 0.10.0",
     "scripts": {"start": "node server"}
 }
-
