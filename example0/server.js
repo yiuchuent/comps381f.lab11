@@ -10,7 +10,7 @@ app.use(session({
   keys: ['key1','key2']
 }));
 
-app.get('/visit', function(req,res,next) {
+app.get('/visit', function(req,res) {
   console.log('nvisit: ' + req.session.nvisit);
   req.session.nvisit = (req.session.nvisit >= 0) ? req.session.nvisit += 1 : 1;
   if (req.session.nvisit > 1) {
