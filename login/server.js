@@ -6,9 +6,8 @@ var app = express();
 app = express();
 app.set('trust proxy', 1);
 
-// middleware
-var SECRETKEY = 'I want to pass COMPS381F';
-
+var SECRETKEY1 = 'I want to pass COMPS381F';
+var SECRETKEY2 = 'Keep this to yourself';
 var users = new Array(
 	{name: 'developer', password: 'developer'},
 	{name: 'guest', password: 'guest'}
@@ -17,7 +16,7 @@ var users = new Array(
 app.set('view engine','ejs');
 app.use(session({
   name: 'session',
-  keys: [SECRETKEY,'key2']
+  keys: [SECRETKEY1,SECRETKEY2]
 }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -28,7 +27,8 @@ app.get('/',function(req,res) {
 	if (!req.session.authenticated) {
 		res.redirect('/login');
 	}
-	res.status(200).end('This is a secret page! (' + req.session.username + ')');
+	res.status(200).end('Hello, ' + req.session.username +
+	  '!  This is a secret page!');
 });
 
 app.get('/login',function(req,res) {
