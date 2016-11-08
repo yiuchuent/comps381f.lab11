@@ -1,0 +1,13 @@
+{
+	"name": "session",
+	"description": "Cookie-Session",
+	"version": "0.0.1",
+	"dependencies": {
+		"express": "latest",
+		"cookie-session": "latest"
+	},
+	"scripts" : {
+		"start": "node server.js"
+	},
+	"engine": "*"
+}
