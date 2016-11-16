@@ -9,7 +9,7 @@ var ObjectId = require('mongodb').ObjectID;
 app.use(session({
   name: 'session',
   keys: ['key1','key2'],
-	maxAge: 60 * 60 * 60
+  maxAge: 5 * 60 * 1000
 }));
 
 app.set('view engine', 'ejs');
