@@ -2,12 +2,11 @@ var session = require('cookie-session');
 var express = require('express');
 
 app = express();
-app.set('trust proxy', 1);
 
 // middleware
 app.use(session({
   name: 'session',
-  keys: ['key1','key2']
+  keys: ['this is secret','don not tell anyone']
 }));
 
 app.get('/visit', function(req,res) {
