@@ -45,15 +45,39 @@ app.get('/showdetails', function(req,res) {
 });
 
 app.get('/shoppingcart', function(req,res) {
-	res.end('coming soon!')
+	var cart = (req.session.cart === undefined)? [] :req.session.cart;
+	res.render('shoppingcart', {c: cart});
 });
 
 app.get('/add2cart', function(req,res) {
-	res.end('coming soon!')
+
+	var id = req.query.id;
+	var cart = (req.session.cart === undefined) ? [] :req.session.cart;
+	var itemExist = false;
+	for (i in cart) {
+		if (cart[i].id == id) { 
+			itemExist = true;
+			cart[i].qty+= 1;  
+			break;
+		}
+	}
+	if (!itemExist) {
+		for (j in products) {
+			if (products[j].id == id) { 
+				var product = products[j];
+				product.qty = 1;
+				cart.push(product); 
+				break; 
+			} 
+		}
+	}
+	req.session.cart = cart;
+	res.redirect('/shoppingcart');
 })
 
 app.get('/emptycart',function(req,res) {
-	res.end('coming soon!')
+	req.session.destroy();
+	res.redirect('/shoppingcart');
 })
 
 

@@ -17,10 +17,13 @@ app.set('view engine', 'ejs');
 
 app.get("/list", function(req,res) {
 	var items = [];
+	req.session.currentItem = (req.session.currentItem >= 0)? req.session.currentItem += 1 : 0;
+	console.log("currentItem "+ req.session.currentItem);
 	MongoClient.connect(mongourl, function(err, db) {
     assert.equal(err,null);
     console.log('Connected to MongoDB\n');
-      db.collection('items').find().toArray(function(err,results) {
+
+      db.collection('items').find().skip(req.session.currentItem * 10).limit(10).toArray(function(err,results) {
         if (err) {
           console.log(err);
         } else {
@@ -29,6 +32,11 @@ app.get("/list", function(req,res) {
         }
       });
 	});
+});
+
+app.get("/clear", function(req,res) {
+	req.session = null;
+	res.redirect('/list');
 });
 
 app.listen(process.env.PORT || 8099);
